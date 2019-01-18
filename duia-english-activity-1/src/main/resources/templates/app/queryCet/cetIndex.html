@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>英语四级查询</title>
+</head>
+<body>
+<div>英语四级查询</div>
+<!--<div>证件号： <input type="text" id="userNum" /></div>-->
+<!--<div>姓&emsp;名： <input type="text" id="userName" /></div>-->
+<div>验证码： <input type="text" id="code" /></div>
+<div>yanzhengma： <img id="yanzhengma" src=""></div>
+<div><button onclick="submit()">提交</button></div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://static.duiabang.com/pro/js/web/common/js/jquery.cookie.js"></script>
+<script src="http://cet.neea.edu.cn/query/js/util.js"></script>
+<script src="http://cet.neea.edu.cn/cet/js/data.js"></script>
+<script>
+    var result = new Object();
+    result.zRule = ["","CET4","CET6"];
+    // alert([[${application.englishStaticServer}]]);
+    //
+    // 考试教育网
+    //     // 六级 420781172206023    汪晓晓
+    //     // 四级 530090172103915 杨悦
+    // 150042172101325  韩蕊 包含口语成绩的
+
+
+    // $.ajax({
+    //     type:"POST",
+    //     url: "/user-exam-score/code",
+    //     data:{card:"530090172103915"},
+    //     success: function (ret) {
+    //         $("#yanzhengma").attr("src",ret.data);
+    //     }
+    // });
+    //
+    // function getKsxm(z){
+    //     var idx = -1;
+    //     var t = z.charAt(0);
+    //     if(t=="F"){
+    //         idx = 1;
+    //     }else if(t=="S"){
+    //         idx = 2;
+    //     }else{
+    //         t = z.charAt(9);
+    //         if(!isNaN(t))
+    //             idx = t;
+    //     }
+    //     if(idx!=-1){
+    //         return result.zRule[idx];
+    //     }
+    //     return null;
+    // }
+    //
+    // function submit(){
+    //     var code = $("#code").val();
+    //     var url = 'http://xiaochao.duia.com:9003/user-exam-score/check';
+    //     var param = {card:"530090172103915",code:code,name:"杨悦",grade:getKsxm("530090172103915")};
+    //     $.ajax({
+    //         type:"POST",
+    //         url: url,
+    //         data: param,
+    //         success: function (data) {
+    //             console.log(data)
+    //         }
+    //     });
+    // }
+
+
+
+
+
+    // 学信网 注意cookieString 参数
+    $.ajax({
+        type:"POST",
+        url: "/user-exam-score/code2",
+        success: function (ret) {
+            $("#yanzhengma").attr("src",ret.data);
+        }
+    });
+
+    function submit(){
+        //?zkzh=530090172103915&xm=%E6%9D%A8%E6%82%A6&yzm=23
+        var code = $("#code").val();
+        var url = 'http://xiaochao.duia.com:9003/user-exam-score/check2';
+        var cookieString = "JSESSIONID="+$.cookie("JSESSIONID")+";HttpOnlyacw_tc="+$.cookie("HttpOnlyacw_tc")+";HttpOnlyaliyungf_tc="+$.cookie("HttpOnlyaliyungf_tc")
+        // 六级 420781172206023    汪晓晓
+        // 四级 530090172103915 杨悦
+        var param = {card:"530090172103915",code:code,name:"杨悦",cookie:cookieString};
+        $.ajax({
+            type:"POST",
+            url: url,
+            data: param,
+            success: function (data) {
+                console.log(data)
+            }
+        });
+    }
+</script>
+</html>
